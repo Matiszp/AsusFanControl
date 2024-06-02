@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -9,6 +9,7 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using AsusFanControl;
 using static System.Windows.Forms.VisualStyles.VisualStyleElement;
+using System.Timers;
 
 namespace AsusFanControlGUI
 {
@@ -16,6 +17,8 @@ namespace AsusFanControlGUI
     {
         AsusControl asusControl = new AsusControl();
         int fanSpeed = 0;
+        private System.Timers.Timer autoRefreshTimer;
+        private bool isAutoRefreshEnabled = false;
 
         public Form1()
         {
@@ -25,6 +28,9 @@ namespace AsusFanControlGUI
             toolStripMenuItemTurnOffControlOnExit.Checked = Properties.Settings.Default.turnOffControlOnExit;
             toolStripMenuItemForbidUnsafeSettings.Checked = Properties.Settings.Default.forbidUnsafeSettings;
             trackBarFanSpeed.Value = Properties.Settings.Default.fanSpeed;
+            // Initializing the timer
+            autoRefreshTimer = new System.Timers.Timer(1000); // 1000 ms = 1 second
+            autoRefreshTimer.Elapsed += AutoRefreshTimer_Elapsed;
         }
 
         private void OnProcessExit(object sender, EventArgs e)
@@ -107,5 +113,48 @@ namespace AsusFanControlGUI
         {
             labelCPUTemp.Text = $"{asusControl.Thermal_Read_Cpu_Temperature()}";
         }
+
+        private void AutoRefreshTimer_Elapsed(object sender, ElapsedEventArgs e)
+        {
+            if (InvokeRequired)
+            {
+                Invoke(new Action(() =>
+                {
+                    UpdateLabels();
+                }));
+            }
+            else
+            {
+                UpdateLabels();
+            }
+        }
+
+        private void UpdateLabels()
+        {
+            labelRPM.Text = string.Join(" ", asusControl.GetFanSpeeds());
+            labelCPUTemp.Text = $"{asusControl.Thermal_Read_Cpu_Temperature()}";
+        }
+
+        private void toolStripMenuItemAutoRefresh_CheckedChanged(object sender, EventArgs e)
+        {
+            if (toolStripMenuItemAutoRefresh.Checked)
+            {
+                button1.Enabled = false;
+                button2.Enabled = false;           
+                autoRefreshTimer.Start();
+                isAutoRefreshEnabled = true;
+            }
+            else
+            {
+                // Enable controls
+                button1.Enabled = true;
+                button2.Enabled = true;
+
+                // Stop the timer
+                autoRefreshTimer.Stop();
+                isAutoRefreshEnabled = false;
+            }
+        }
+
     }
 }
