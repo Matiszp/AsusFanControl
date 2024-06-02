@@ -1,4 +1,4 @@
-﻿namespace AsusFanControlGUI
+namespace AsusFanControlGUI
 {
     partial class Form1
     {
@@ -186,6 +186,34 @@
             this.toolStripMenuItemCheckForUpdates.Size = new System.Drawing.Size(115, 20);
             this.toolStripMenuItemCheckForUpdates.Text = "Check for updates";
             this.toolStripMenuItemCheckForUpdates.Click += new System.EventHandler(this.toolStripMenuItemCheckForUpdates_Click);
+            //
+            // toolStripMenuItemAutoRefresh
+            //
+            this.toolStripMenuItemAutoRefresh = new System.Windows.Forms.ToolStripMenuItem();
+
+            // 
+            // menuStrip1
+            // 
+            this.menuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.toolStripMenuItem1,
+            this.toolStripMenuItemCheckForUpdates});
+            // 
+            // toolStripMenuItem1
+            // 
+            this.toolStripMenuItem1.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.toolStripMenuItemTurnOffControlOnExit,
+            this.toolStripMenuItemForbidUnsafeSettings,
+            this.toolStripMenuItemAutoRefresh});
+            // 
+            // toolStripMenuItemAutoRefresh
+            // 
+            this.toolStripMenuItemAutoRefresh.CheckOnClick = true;
+            this.toolStripMenuItemAutoRefresh.Name = "toolStripMenuItemAutoRefresh";
+            this.toolStripMenuItemAutoRefresh.Size = new System.Drawing.Size(196, 22);
+            this.toolStripMenuItemAutoRefresh.Text = "Autorefresh";
+            this.toolStripMenuItemAutoRefresh.CheckedChanged += new System.EventHandler(this.toolStripMenuItemAutoRefresh_CheckedChanged);
+
+
             // 
             // Form1
             // 
@@ -232,6 +260,8 @@
         private System.Windows.Forms.ToolStripMenuItem toolStripMenuItemTurnOffControlOnExit;
         private System.Windows.Forms.ToolStripMenuItem toolStripMenuItemForbidUnsafeSettings;
         private System.Windows.Forms.ToolStripMenuItem toolStripMenuItemCheckForUpdates;
+        private System.Windows.Forms.ToolStripMenuItem toolStripMenuItemAutoRefresh;
+
     }
 }
 
